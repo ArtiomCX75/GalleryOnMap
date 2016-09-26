@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
 
     GalleryItemsDataKeeper dataKeeper;
     DataBaseHelper dataBase;
+    ItemsCreator itemsCreator;
 
     //float action menu items
     FloatingActionMenu fabAddItemMenu;
@@ -45,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
         dataBase = DataBaseHelper.getInstance(this);
 
         //initializing ItemsCreator
-        ItemsCreator itemsCreator = new ItemsCreator(dataBase);
+        itemsCreator = new ItemsCreator(dataBase);
 
         //creating data keeper
         dataKeeper = GalleryItemsDataKeeper.getInstance();
@@ -105,7 +106,8 @@ public class MainActivity extends AppCompatActivity {
             switch (v.getId()) {
                 //add photo button pressed
                 case ID_FAB_ADD_PHOTO:
-                    Toast.makeText(getBaseContext(), fabAddPhoto.getLabelText() + " pressed", Toast.LENGTH_SHORT).show();
+                    AddPhotoHandler.dispatchTakePictureIntent(MainActivity.this);
+//                    Toast.makeText(getBaseContext(), fabAddPhoto.getLabelText() + " pressed", Toast.LENGTH_SHORT).show();
                     break;
 
                 //add video button pressed
@@ -131,8 +133,9 @@ public class MainActivity extends AppCompatActivity {
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
-            PhotoButtonHandler.handleResult(requestCode, resultCode, data);
+            AddPhotoHandler.handleResult(requestCode, resultCode, data);
         }
     }
 }

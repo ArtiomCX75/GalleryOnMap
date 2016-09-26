@@ -6,31 +6,21 @@ import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
 
+import com.dmytrobohdanov.galleryonmap.Items.Item;
+import com.dmytrobohdanov.galleryonmap.Items.ItemsCreator;
+
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 
-public class PhotoButtonHandler extends Activity {
+public class AddPhotoHandler extends Activity {
     static final int REQUEST_TAKE_PHOTO = 1;
     static final int REQUEST_IMAGE_CAPTURE = 1;
 
-
-    //file that keeps photo
+    //todo: refactor this to avoid photoFile variable
     private static File photoFile;
-
-    /**
-     * Constructor
-     *
-     * @param activity pointer to mainActivity
-     */
-    PhotoButtonHandler(Activity activity, int photoButtonId) {
-
-    }
-
-//    public handler of onResult
-
 
     /**
      * Creating file for image
@@ -72,11 +62,12 @@ public class PhotoButtonHandler extends Activity {
             } catch (IOException ex) {
                 //do something if needed
             }
+
             // Continue only if the File was successfully created
             if (photoFile != null) {
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
                         Uri.fromFile(photoFile));
-//                mainActivity.startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+//                activity.startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
                 activity.startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
             }
 
@@ -92,9 +83,7 @@ public class PhotoButtonHandler extends Activity {
      * @param data        - intent keeping photo file
      */
     public static void handleResult(int requestCode, int resultCode, Intent data) {
-        File photo = (File) data.getExtras().get(MediaStore.EXTRA_OUTPUT);
-
-
+        Item item = ItemsCreator.createNewItem(photoFile.getPath(), false);
     }
 }
 

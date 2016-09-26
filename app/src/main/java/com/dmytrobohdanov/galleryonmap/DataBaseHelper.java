@@ -72,6 +72,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     /**
      * not for first initialization!
+     * just for get instance
      * //todo: refactor this
      *
      * @return

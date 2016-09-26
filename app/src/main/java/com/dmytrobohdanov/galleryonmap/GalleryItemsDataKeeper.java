@@ -76,4 +76,10 @@ public class GalleryItemsDataKeeper {
 //        items.add(item);
         galleryAdapter.notifyDataSetChanged();
     }
+
+    public void notifyChanges(){
+        itemsIds = dataBase.getArrayOfItemsIds();
+        galleryAdapter.updateItemsAmount();
+//        galleryAdapter.notifyDataSetChanged();
+    }
 }

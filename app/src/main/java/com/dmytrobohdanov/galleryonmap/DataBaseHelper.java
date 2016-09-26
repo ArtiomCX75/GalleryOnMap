@@ -7,6 +7,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.dmytrobohdanov.galleryonmap.Items.Item;
+
 import java.util.ArrayList;
 
 public class DataBaseHelper extends SQLiteOpenHelper {
@@ -50,7 +52,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             + ");";
 
     //instance for singleton
-    private DataBaseHelper instance;
+    private static DataBaseHelper instance;
 
     /**
      * Constructor
@@ -61,12 +63,23 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
-    public DataBaseHelper getInstance(Context context) {
+    public static DataBaseHelper getInstance(Context context) {
         if (instance == null) {
             instance = new DataBaseHelper(context);
         }
         return instance;
     }
+
+    /**
+     * not for first initialization!
+     * //todo: refactor this
+     *
+     * @return
+     */
+    public static DataBaseHelper getInstance() {
+        return instance;
+    }
+
 
     /**
      * Creation of DB
@@ -177,7 +190,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         Cursor cursor = getWritableDatabase().rawQuery(query, null);
         cursor.moveToFirst();
 
-        int itemId = cursor.getInt(cursor.getColumnIndex(ITEM_ID_COLUMN));
+        long itemId = cursor.getInt(cursor.getColumnIndex(ITEM_ID_COLUMN));
         String filePath = cursor.getString(cursor.getColumnIndex(ITEM_FILE_PATH_COLUMN));
         String isVideo = cursor.getString(cursor.getColumnIndex(ITEM_IS_VIDEO_COLUMN));
         String location = cursor.getString(cursor.getColumnIndex(ITEM_LOCATION_COLUMN));
@@ -202,7 +215,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
      *
      * @return array of ID of Items in database
      */
-    public ArrayList<Integer> getArrayOfItemsIds(){
+    public ArrayList<Integer> getArrayOfItemsIds() {
         ArrayList<Integer> itemsIds = new ArrayList<>();
         //todo write it
         return itemsIds;

@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class GalleryItemHolderFragment extends Fragment {
@@ -37,7 +38,7 @@ public class GalleryItemHolderFragment extends Fragment {
         //creating view
         View view = inflater.inflate(R.layout.fragment_gallery_item_holder, null);
 
-        GalleryItemHolderFragmentAdapter.displayDataInView((TextView) view.findViewById(R.id.tvPage), pageNumber);
+        GalleryItemHolderFragmentAdapter.displayDataInView((ImageView) view.findViewById(R.id.imageHolder), pageNumber);
 
         return view;
     }

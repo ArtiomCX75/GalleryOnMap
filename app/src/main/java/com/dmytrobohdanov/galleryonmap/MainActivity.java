@@ -1,17 +1,15 @@
 package com.dmytrobohdanov.galleryonmap;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import com.dmytrobohdanov.galleryonmap.temp.GalleryItemsDataKeeper;
+import com.dmytrobohdanov.galleryonmap.Items.ItemsCreator;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 
@@ -25,8 +23,11 @@ public class MainActivity extends AppCompatActivity {
     private static final int ID_FAB_ADD_DOWNLOAD = R.id.fab_add_download;
     private static final int ID_FAB_ADD_FROM_URL = R.id.fab_add_by_url;
 
-    ViewPager pager;
+    ViewPager viewPager;
     PagerAdapter pagerAdapter;
+
+    GalleryItemsDataKeeper dataKeeper;
+    DataBaseHelper dataBase;
 
     //float action menu items
     FloatingActionMenu fabAddItemMenu;
@@ -40,6 +41,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //initializing database
+        dataBase = DataBaseHelper.getInstance(this);
+
+        //initializing ItemsCreator
+        ItemsCreator itemsCreator = new ItemsCreator(dataBase);
+
+        //creating data keeper
+        dataKeeper = GalleryItemsDataKeeper.getInstance();
+
         //setting float action buttons
         fabAddItemMenu = (FloatingActionMenu) findViewById(ID_ADD_ITEM_FAB_MENU);
         fabAddPhoto = (FloatingActionButton) findViewById(ID_FAB_ADD_PHOTO);
@@ -47,19 +57,28 @@ public class MainActivity extends AppCompatActivity {
         fabDownload = (FloatingActionButton) findViewById(ID_FAB_ADD_DOWNLOAD);
         fabAddFromUrl = (FloatingActionButton) findViewById(ID_FAB_ADD_FROM_URL);
 
+        //setting listeners to FABs
         fabAddPhoto.setOnClickListener(clickListener);
         fabAddVideo.setOnClickListener(clickListener);
         fabDownload.setOnClickListener(clickListener);
         fabAddFromUrl.setOnClickListener(clickListener);
 
-        //setting ViewPager
-        //set amount of items
+        //initializing ViewPager
+        viewPager = (ViewPager) findViewById(R.id.galleryHolder);
 
-        pager = (ViewPager) findViewById(R.id.galleryHolder);
-        pagerAdapter = new GalleryItemHolderFragmentAdapter(getSupportFragmentManager());
-        pager.setAdapter(pagerAdapter);
+        //creating adapter for ViewPager
+        GalleryItemHolderFragmentAdapter adapter =
+                new GalleryItemHolderFragmentAdapter(getSupportFragmentManager());
 
-        pager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        //setting adapter to viewPager
+        pagerAdapter = adapter;
+        viewPager.setAdapter(pagerAdapter);
+
+        //setting GalleryAdapter to database instance
+        dataKeeper.setGalleryAdapter(adapter);
+
+
+        viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
             @Override
             public void onPageSelected(int position) {
@@ -107,6 +126,13 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-
-
+    /**
+     * processing data from camera
+     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == Activity.RESULT_OK) {
+            PhotoButtonHandler.handleResult(requestCode, resultCode, data);
+        }
+    }
 }

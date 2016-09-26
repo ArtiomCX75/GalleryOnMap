@@ -1,11 +1,12 @@
 package com.dmytrobohdanov.galleryonmap;
 
+import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.widget.TextView;
+import android.widget.ImageView;
 
-import com.dmytrobohdanov.galleryonmap.temp.GalleryItemsDataKeeper;
+import com.dmytrobohdanov.galleryonmap.Items.Item;
 
 class GalleryItemHolderFragmentAdapter extends FragmentStatePagerAdapter {
     //amount of items in gallery
@@ -21,7 +22,7 @@ class GalleryItemHolderFragmentAdapter extends FragmentStatePagerAdapter {
      *
      * @param itemsAmount amount of items to display
      */
-    public void setItemsAmount(int itemsAmount){
+    public void setItemsAmount(int itemsAmount) {
         GALLERY_ITEMS_AMOUNT = itemsAmount;
         notifyDataSetChanged();
     }
@@ -30,7 +31,7 @@ class GalleryItemHolderFragmentAdapter extends FragmentStatePagerAdapter {
      * Updating amount of items to display
      * getting info from GalleryItemsDataKeeper
      */
-    public void updateItemsAmount(){
+    public void updateItemsAmount() {
         GALLERY_ITEMS_AMOUNT = GalleryItemsDataKeeper.getInstance().getItemAmount();
         notifyDataSetChanged();
     }
@@ -45,20 +46,13 @@ class GalleryItemHolderFragmentAdapter extends FragmentStatePagerAdapter {
         return GALLERY_ITEMS_AMOUNT;
     }
 
-    public static void displayDataInFragment(GalleryItemHolderFragment itemHolder, int pageNumber){
-        //temp:
-        TextView tvPage = (TextView) itemHolder.getView().findViewById(R.id.tvPage);
+    public static void displayDataInView(ImageView imageView, int pageNumber) {
         GalleryItemsDataKeeper dataKeeper = GalleryItemsDataKeeper.getInstance();
 
-        //getting item
-        tvPage.setText("Page " + dataKeeper.getItemById(pageNumber));
-    }
+        //getting image from base
+        Item item = dataKeeper.getItemByPosition(pageNumber);
 
-    public static void displayDataInView(TextView tvPage, int pageNumber){
-        //temp:
-        GalleryItemsDataKeeper dataKeeper = GalleryItemsDataKeeper.getInstance();
-
-        //getting item
-        tvPage.setText("Page " + dataKeeper.getItemById(pageNumber));
+        //setting image to image view
+        imageView.setImageURI(Uri.parse(item.getFilePath()));
     }
 }

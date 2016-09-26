@@ -1,4 +1,6 @@
-package com.dmytrobohdanov.galleryonmap;
+package com.dmytrobohdanov.galleryonmap.Items;
+
+import com.dmytrobohdanov.galleryonmap.DataBaseHelper;
 
 /**
  * Class that keeps data of item to display in gallery
@@ -6,7 +8,7 @@ package com.dmytrobohdanov.galleryonmap;
  */
 public class Item {
     //id of item
-    private int itemId;
+    private long itemId;
 
     //path to file
     private String filePath;
@@ -23,14 +25,18 @@ public class Item {
     /*
      * Constructors
      */
+
+    //todo: refactor this to avoid access not from ItemsCreator
+
     /**
-     *  Creating new item
+     * Creating new item
+     * for ItemsCreator
      *
+     * @param itemId
      * @param filePath
      * @param isVideo
      */
-    public Item(String filePath, boolean isVideo) {
-        //todo: set id by get value from db adding value
+    public Item(long itemId, String filePath, boolean isVideo) {
         this.itemId = itemId;
         this.filePath = filePath;
         this.isVideo = isVideo;
@@ -40,19 +46,24 @@ public class Item {
      * Constructor
      * to create Item instance from database data
      */
-    public Item(int itemId, String filePath, String isVideo, String location, String properties) {
-        //todo
+    public Item(long itemId, String filePath, String isVideo, String location, String properties) {
+        this.itemId = itemId;
+        this.filePath = filePath;
+        this.isVideo = isVideo.toLowerCase().equals("true");
+        this.location = location;
+        this.properties = properties;
     }
 
     /*
      * Getters
      */
+
     /**
      * Get id of Item in data base
      *
      * @return id of Item in DataBase
      */
-    public int getItemId() {
+    public long getItemId() {
         return itemId;
     }
 
@@ -97,6 +108,7 @@ public class Item {
     /*
      * Setters
      */
+
     /**
      * Setting properties of item
      *

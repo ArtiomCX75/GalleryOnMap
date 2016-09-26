@@ -7,9 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.dmytrobohdanov.galleryonmap.temp.GalleryItemsDataKeeper;
-
-
 public class GalleryItemHolderFragment extends Fragment {
     static final String KEY_ITEM_NUMBER = "itemsNumber";
 
@@ -40,15 +37,8 @@ public class GalleryItemHolderFragment extends Fragment {
         //creating view
         View view = inflater.inflate(R.layout.fragment_gallery_item_holder, null);
 
-        //temp:
-        TextView tvPage = (TextView) view.findViewById(R.id.tvPage);
-        GalleryItemsDataKeeper dataKeeper = GalleryItemsDataKeeper.getInstance();
-
-        //getting item
-        tvPage.setText("Page " + dataKeeper.getItemById(pageNumber));
+        GalleryItemHolderFragmentAdapter.displayDataInView((TextView) view.findViewById(R.id.tvPage), pageNumber);
 
         return view;
-        // Inflate the layout for this fragment
-//        return inflater.inflate(R.layout.fragment_gallery_item_holder, container, false);
     }
 }

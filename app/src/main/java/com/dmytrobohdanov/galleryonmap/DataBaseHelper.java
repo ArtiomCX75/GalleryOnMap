@@ -44,7 +44,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public static final String DATABASE_CREATE_SCRIPT = "create table "
             + DATABASE_TABLE_GALLERY
             + " ("
-            + ITEM_ID_COLUMN         + " integer autoincrement,"
+            + ITEM_ID_COLUMN         + " integer primary key autoincrement,"
             + ITEM_FILE_PATH_COLUMN  + " text,"
             + ITEM_IS_VIDEO_COLUMN   + " text,"
             + ITEM_PROPERTIES_COLUMN + " text,"

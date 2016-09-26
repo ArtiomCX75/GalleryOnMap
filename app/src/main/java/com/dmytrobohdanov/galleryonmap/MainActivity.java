@@ -107,6 +107,7 @@ public class MainActivity extends AppCompatActivity {
                 //add photo button pressed
                 case ID_FAB_ADD_PHOTO:
                     AddPhotoHandler.dispatchTakePictureIntent(MainActivity.this);
+                    fabAddItemMenu.close(false);
 //                    Toast.makeText(getBaseContext(), fabAddPhoto.getLabelText() + " pressed", Toast.LENGTH_SHORT).show();
                     break;
 

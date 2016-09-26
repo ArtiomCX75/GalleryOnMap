@@ -84,6 +84,7 @@ public class AddPhotoHandler extends Activity {
      */
     public static void handleResult(int requestCode, int resultCode, Intent data) {
         Item item = ItemsCreator.createNewItem(photoFile.getPath(), false);
+        GalleryItemsDataKeeper.getInstance().notifyChanges();
     }
 }
 

@@ -10,7 +10,7 @@ import android.view.MenuItem;
 import java.io.File;
 
 public class MenuButtonsHandler {
-    private int positionOfItem;
+    private Integer positionOfItem;
     private Menu menu;
 
     /**
@@ -35,6 +35,9 @@ public class MenuButtonsHandler {
      * to set location of Item on position positionOfItem
      */
     public void setLocationPressed(){
+        if(positionOfItem == null){
+            return;
+        }
         //todo
     }
 
@@ -42,21 +45,19 @@ public class MenuButtonsHandler {
      * Share Item  on position positionOfItem
      */
     public void shareButtonPressed(){
+        if(positionOfItem == null){
+            return;
+        }
 
     }
 
-    private Intent createShareForecastIntent() {
-        Intent shareIntent = new Intent(Intent.ACTION_SEND);
-        shareIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-        shareIntent.setType("text/plain");
-        shareIntent.putExtra("photo",
-                new File(GalleryItemsDataKeeper.getInstance().getItemByPosition(positionOfItem).getFilePath()));
-        return shareIntent;
-    }
     /**
      * Opens new activity with info of Item
      */
     public void infoButtonPressed(){
+        if(positionOfItem == null){
+            return;
+        }
 
     }
 
@@ -64,6 +65,11 @@ public class MenuButtonsHandler {
      * Deletes Item
      */
     public void deleteButtonPressed(){
-
+        if(positionOfItem == null){
+            return;
+        }
+        GalleryItemsDataKeeper.getInstance().deleteItemOnPosition(positionOfItem);
     }
+
+
 }

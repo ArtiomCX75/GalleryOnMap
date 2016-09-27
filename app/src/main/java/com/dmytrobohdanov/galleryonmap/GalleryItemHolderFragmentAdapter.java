@@ -6,6 +6,7 @@ import android.media.ThumbnailUtils;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.PagerAdapter;
 import android.widget.ImageView;
 
 import com.dmytrobohdanov.galleryonmap.Items.Item;
@@ -46,6 +47,11 @@ class GalleryItemHolderFragmentAdapter extends FragmentStatePagerAdapter {
     @Override
     public int getCount() {
         return GALLERY_ITEMS_AMOUNT;
+    }
+
+    @Override
+    public int getItemPosition(Object object){
+        return PagerAdapter.POSITION_NONE;
     }
 
     public static void displayDataInView(ImageView imageView, int pageNumber) {

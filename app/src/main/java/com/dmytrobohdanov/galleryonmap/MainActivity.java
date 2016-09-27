@@ -86,9 +86,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onPageSelected(int position) {
-                //todo: set id of item to menu items
-                //todo: on create activity - set item position 0
-//                Log.d(LOG_TAG, "onPageSelected, position = " + position);
+                menuButtonsHandler.setPositionOfItemWorkingWith(position);
             }
 
             @Override
@@ -106,8 +104,6 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_manu, menu);
         this.menuButtonsHandler = new MenuButtonsHandler(menu);
-        //temp:
-        this.menuButtonsHandler.setPositionOfItemWorkingWith(0);
         return true;
     }
 
@@ -133,7 +129,6 @@ public class MainActivity extends AppCompatActivity {
 
             case R.id.menu_delete:
                 this.menuButtonsHandler.deleteButtonPressed();
-                Toast.makeText(getBaseContext(), "Share button pressed", Toast.LENGTH_SHORT).show();
                 break;
         }
 

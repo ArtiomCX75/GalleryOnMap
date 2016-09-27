@@ -80,7 +80,17 @@ public class GalleryItemsDataKeeper {
      */
     public void addNewItem(String filePath, boolean isVideo) {
         Item item = ItemsCreator.createNewItem(filePath, isVideo);
+        notifyChanges();
     }
 
+    /**
+     * deletes item on specified position
+     *
+     * @param position of item
+     */
+    public void deleteItemOnPosition (int position){
+        dataBase.deleteItem(itemsIds.get(position));
+        notifyChanges();
+    }
 
 }

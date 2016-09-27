@@ -85,7 +85,8 @@ public class AddPhotoHandler extends Activity {
     public static void handleResult(int requestCode, int resultCode, Intent data) {
         //temporary - photoFile is placed as var in this class, not passing
         //so photoFile is defined above
-        Item item = ItemsCreator.createNewItem(photoFile.getPath(), false);
+        GalleryItemsDataKeeper.getInstance().addNewItem(photoFile.getPath(), false);
+//        Item item = ItemsCreator.createNewItem(photoFile.getPath(), false);
         GalleryItemsDataKeeper.getInstance().notifyChanges();
     }
 }

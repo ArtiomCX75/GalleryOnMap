@@ -4,12 +4,10 @@ package com.dmytrobohdanov.galleryonmap;
 import android.util.Log;
 
 import com.dmytrobohdanov.galleryonmap.Items.Item;
+import com.dmytrobohdanov.galleryonmap.Items.ItemsCreator;
 
 import java.util.ArrayList;
 
-/**
- * Temporary class
- */
 public class GalleryItemsDataKeeper {
     private static GalleryItemsDataKeeper instance;
 
@@ -50,12 +48,6 @@ public class GalleryItemsDataKeeper {
         this.galleryAdapter = galleryAdapter;
     }
 
-    //    /**
-//     * @return data set
-//     */
-//    public ArrayList<Item> getData() {
-//        return items;
-//    }
 
     /**
      * Returning item of data by specified position
@@ -74,16 +66,21 @@ public class GalleryItemsDataKeeper {
         return itemsIds.size();
     }
 
-    public void addNewItem(Item item) {
-//        items.add(item);
-        galleryAdapter.notifyDataSetChanged();
-    }
 
     public void notifyChanges(){
-        Log.d("addingPhotoPr", "notifyChanges() start");
         itemsIds = dataBase.getArrayOfItemsIds();
-        Log.d("addingPhotoPr", "notifyChanges");
         galleryAdapter.updateItemsAmount();
-//        galleryAdapter.notifyDataSetChanged();
     }
+
+    /**
+     * Adding new Item
+     *
+     * @param filePath path to file
+     * @param isVideo is it video flag
+     */
+    public void addNewItem(String filePath, boolean isVideo) {
+        Item item = ItemsCreator.createNewItem(filePath, isVideo);
+    }
+
+
 }

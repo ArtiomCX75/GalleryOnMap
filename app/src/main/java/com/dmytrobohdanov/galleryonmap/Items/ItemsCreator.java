@@ -7,7 +7,7 @@ import com.dmytrobohdanov.galleryonmap.DataBaseHelper;
  * Creator of Items
  * using to create new Item
  */
-public class ItemsCreator {
+public class ItemsCreator extends Item {
     static DataBaseHelper dataBase;
 
     /**

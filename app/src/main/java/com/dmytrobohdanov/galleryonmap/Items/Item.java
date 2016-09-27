@@ -25,9 +25,6 @@ public class Item {
     /*
      * Constructors
      */
-
-    //todo: refactor this to avoid access not from ItemsCreator
-
     /**
      * Creating new item
      * for ItemsCreator
@@ -36,7 +33,7 @@ public class Item {
      * @param filePath
      * @param isVideo
      */
-    public Item(long itemId, String filePath, boolean isVideo) {
+    protected Item(long itemId, String filePath, boolean isVideo) {
         this.itemId = itemId;
         this.filePath = filePath;
         this.isVideo = isVideo;
@@ -52,6 +49,12 @@ public class Item {
         this.isVideo = isVideo.toLowerCase().equals("true");
         this.location = location;
         this.properties = properties;
+    }
+
+    /**
+     * requires empty constructor
+     */
+    public Item() {
     }
 
     /*

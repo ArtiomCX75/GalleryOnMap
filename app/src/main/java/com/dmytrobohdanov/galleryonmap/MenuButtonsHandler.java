@@ -1,11 +1,9 @@
 package com.dmytrobohdanov.galleryonmap;
 
+import android.app.Activity;
 import android.content.Intent;
-import android.support.v4.view.MenuItemCompat;
-import android.support.v7.widget.ShareActionProvider;
-import android.util.Log;
+import android.net.Uri;
 import android.view.Menu;
-import android.view.MenuItem;
 
 import java.io.File;
 
@@ -54,11 +52,16 @@ public class MenuButtonsHandler {
     /**
      * Opens new activity with info of Item
      */
-    public void infoButtonPressed(){
+    public void infoButtonPressed(Activity activity){
         if(positionOfItem == null){
             return;
         }
 
+        //temporary realization :)
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setDataAndType(Uri.fromFile(
+                new File(GalleryItemsDataKeeper.getInstance().getItemByPosition(positionOfItem).getFilePath())), "image/*");
+        activity.startActivity(intent);
     }
 
     /**

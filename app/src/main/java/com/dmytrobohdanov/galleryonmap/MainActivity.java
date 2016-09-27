@@ -81,7 +81,6 @@ public class MainActivity extends AppCompatActivity {
         //setting GalleryAdapter to database instance
         dataKeeper.setGalleryAdapter(adapter);
 
-
         viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
             @Override
@@ -104,6 +103,11 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_manu, menu);
         this.menuButtonsHandler = new MenuButtonsHandler(menu);
+        //set position of first element to menu buttons handler, in case if there are elements
+        if(dataKeeper.getItemAmount() != 0){
+            menuButtonsHandler.setPositionOfItemWorkingWith(0);
+        }
+
         return true;
     }
 
@@ -123,8 +127,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
             case R.id.menu_info:
-                this.menuButtonsHandler.infoButtonPressed();
-                Toast.makeText(getBaseContext(), "Info button pressed", Toast.LENGTH_SHORT).show();
+                this.menuButtonsHandler.infoButtonPressed(this);
                 break;
 
             case R.id.menu_delete:

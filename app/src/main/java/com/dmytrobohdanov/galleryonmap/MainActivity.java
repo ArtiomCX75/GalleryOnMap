@@ -6,6 +6,9 @@ import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -29,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     GalleryItemsDataKeeper dataKeeper;
     DataBaseHelper dataBase;
     ItemsCreator itemsCreator;
+    MenuButtonsHandler menuButtonsHandler;
 
     //float action menu items
     FloatingActionMenu fabAddItemMenu;
@@ -99,6 +103,44 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_manu, menu);
+        this.menuButtonsHandler = new MenuButtonsHandler(menu);
+        //temp:
+        this.menuButtonsHandler.setPositionOfItemWorkingWith(0);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        switch (id){
+            case R.id.menu_set_location:
+                this.menuButtonsHandler.setLocationPressed();
+                Toast.makeText(getBaseContext(), "Set location button pressed", Toast.LENGTH_SHORT).show();
+                break;
+
+            case R.id.menu_share:
+                Toast.makeText(getBaseContext(), "Share button pressed", Toast.LENGTH_SHORT).show();
+                this.menuButtonsHandler.shareButtonPressed();
+                break;
+
+            case R.id.menu_info:
+                this.menuButtonsHandler.infoButtonPressed();
+                Toast.makeText(getBaseContext(), "Info button pressed", Toast.LENGTH_SHORT).show();
+                break;
+
+            case R.id.menu_delete:
+                this.menuButtonsHandler.deleteButtonPressed();
+                Toast.makeText(getBaseContext(), "Share button pressed", Toast.LENGTH_SHORT).show();
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
     //getting onClickListener
     private View.OnClickListener clickListener = new View.OnClickListener() {
         @Override
@@ -108,7 +150,6 @@ public class MainActivity extends AppCompatActivity {
                 case ID_FAB_ADD_PHOTO:
                     AddPhotoHandler.dispatchTakePictureIntent(MainActivity.this);
                     fabAddItemMenu.close(false);
-//                    Toast.makeText(getBaseContext(), fabAddPhoto.getLabelText() + " pressed", Toast.LENGTH_SHORT).show();
                     break;
 
                 //add video button pressed

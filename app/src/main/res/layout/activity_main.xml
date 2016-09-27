@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:fab="http://schemas.android.com/apk/res-auto"
-
     tools:context="com.dmytrobohdanov.galleryonmap.MainActivity">
 
-     <android.support.v4.view.ViewPager
+    <android.support.v4.view.ViewPager
         android:id="@+id/galleryHolder"
         android:layout_width="match_parent"
         android:layout_height="match_parent"></android.support.v4.view.ViewPager>
@@ -19,7 +19,6 @@
         android:layout_height="match_parent"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        fab:menu_icon="@drawable/ic_add_menu"
         android:paddingBottom="10dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
@@ -27,12 +26,13 @@
         fab:menu_colorNormal="#c5cae9"
         fab:menu_colorPressed="#7986cb"
         fab:menu_colorRipple="#78909c"
-        fab:menu_labels_ellipsize="end"
-        fab:menu_labels_singleLine="true"
-        fab:menu_labels_textColor="@color/dark_grey"
+        fab:menu_icon="@drawable/ic_add_menu"
         fab:menu_labels_colorNormal="@color/white"
         fab:menu_labels_colorPressed="@color/light_grey"
-        fab:menu_labels_colorRipple="@color/grey">
+        fab:menu_labels_colorRipple="@color/grey"
+        fab:menu_labels_ellipsize="end"
+        fab:menu_labels_singleLine="true"
+        fab:menu_labels_textColor="@color/dark_grey">
 
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/fab_add_photo"

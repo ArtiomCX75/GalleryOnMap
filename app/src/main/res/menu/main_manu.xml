@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.dmytro.sunny.MainActivity">
+
+    <item
+        android:id="@+id/menu_set_location"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_menu_set_location"
+        android:title="@string/menu_map"/>
+
+    <item
+        android:id="@+id/menu_share"
+        android:icon="@drawable/ic_menu_share"
+        app:showAsAction="ifRoom"
+        android:title="@string/menu_share"/>
+    <item
+        android:id="@+id/menu_info"
+        android:icon="@drawable/ic_menu_info"
+        app:showAsAction="ifRoom"
+        android:title="@string/menu_info"/>
+    <item
+        android:id="@+id/menu_delete"
+        android:icon="@android:drawable/ic_menu_delete"
+        app:showAsAction="never"
+        android:title="@string/menu_delete"/>
+</menu>

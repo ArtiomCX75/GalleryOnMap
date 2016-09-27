@@ -218,7 +218,17 @@ public class DataBaseHelper extends SQLiteOpenHelper {
      */
     public ArrayList<Integer> getArrayOfItemsIds() {
         ArrayList<Integer> itemsIds = new ArrayList<>();
-        //todo write it
+
+        //getting all IDs in gallery-table
+        Cursor cursor = getWritableDatabase().query(DATABASE_TABLE_GALLERY,
+                new String[]{ITEM_ID_COLUMN}, null, null, null, null, null);
+
+        while(cursor.moveToNext()){
+            itemsIds.add(cursor.getInt(cursor.getColumnIndex(ITEM_ID_COLUMN)));
+        }
+
+        cursor.close();
+
         return itemsIds;
     }
 }

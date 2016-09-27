@@ -39,7 +39,6 @@ public class GalleryItemHolderFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_gallery_item_holder, null);
 
         GalleryItemHolderFragmentAdapter.displayDataInView((ImageView) view.findViewById(R.id.imageHolder), pageNumber);
-
         return view;
     }
 }

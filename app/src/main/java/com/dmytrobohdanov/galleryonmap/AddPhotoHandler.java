@@ -83,6 +83,8 @@ public class AddPhotoHandler extends Activity {
      * @param data        - intent keeping photo file
      */
     public static void handleResult(int requestCode, int resultCode, Intent data) {
+        //temporary - photoFile is placed as var in this class, not passing
+        //so photoFile is defined above
         Item item = ItemsCreator.createNewItem(photoFile.getPath(), false);
         GalleryItemsDataKeeper.getInstance().notifyChanges();
     }

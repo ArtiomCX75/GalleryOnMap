@@ -1,6 +1,8 @@
 package com.dmytrobohdanov.galleryonmap;
 
 
+import android.util.Log;
+
 import com.dmytrobohdanov.galleryonmap.Items.Item;
 
 import java.util.ArrayList;
@@ -78,7 +80,9 @@ public class GalleryItemsDataKeeper {
     }
 
     public void notifyChanges(){
+        Log.d("addingPhotoPr", "notifyChanges() start");
         itemsIds = dataBase.getArrayOfItemsIds();
+        Log.d("addingPhotoPr", "notifyChanges");
         galleryAdapter.updateItemsAmount();
 //        galleryAdapter.notifyDataSetChanged();
     }

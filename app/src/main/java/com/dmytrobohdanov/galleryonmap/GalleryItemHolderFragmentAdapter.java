@@ -1,10 +1,15 @@
 package com.dmytrobohdanov.galleryonmap;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.util.Log;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.dmytrobohdanov.galleryonmap.Items.Item;
 
@@ -32,8 +37,11 @@ class GalleryItemHolderFragmentAdapter extends FragmentStatePagerAdapter {
      * getting info from GalleryItemsDataKeeper
      */
     public void updateItemsAmount() {
+        Log.d("addingPhotoPr", "updateItemsAmount() start");
         GALLERY_ITEMS_AMOUNT = GalleryItemsDataKeeper.getInstance().getItemAmount();
+        Log.d("addingPhotoPr", "updateItemsAmount() amount updated");
         notifyDataSetChanged();
+        Log.d("addingPhotoPr", "updateItemsAmount() had notified");
     }
 
     @Override
@@ -52,7 +60,23 @@ class GalleryItemHolderFragmentAdapter extends FragmentStatePagerAdapter {
         //getting image from base
         Item item = dataKeeper.getItemByPosition(pageNumber);
 
+        //get preview from URI
+        Bitmap bitmap = ThumbnailUtils.extractThumbnail(
+//                BitmapFactory.decodeFile(item.getFilePath()), imageView.getWidth(), imageView.getHeight());
+                BitmapFactory.decodeFile(item.getFilePath()), 1024, 1280); //todo: rewrite
+
+        //set image to ImageView
+        imageView.setImageBitmap(bitmap);
+
+//        //set parameters to view
+//        imageNote.setPadding(0, 10, 0, 1);
+//        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+//                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+//        layoutParams.setMargins(0, 10, 0, 10);
+
+//        imageNote.setLayoutParams(layoutParams);
+
         //setting image to image view
-        imageView.setImageURI(Uri.parse(item.getFilePath()));
+//        imageView.setImageURI(Uri.parse(item.getFilePath()));
     }
 }

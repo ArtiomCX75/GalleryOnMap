@@ -16,7 +16,9 @@ import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 
 public class MainActivity extends AppCompatActivity {
-    private static final String LOG_TAG = "MainActivityTag";
+    //request flags for startActivityForResult
+    public static final int REQUEST_TAKE_PHOTO = 1;
+    public static final int REQUEST_CODE_LOCATION = 2;
 
     //float action button/menu IDs
     private static final int ID_ADD_ITEM_FAB_MENU = R.id.add_item_fab_menu;
@@ -32,6 +34,9 @@ public class MainActivity extends AppCompatActivity {
     DataBaseHelper dataBase;
     ItemsCreator itemsCreator;
     MenuButtonsHandler menuButtonsHandler;
+
+    //current position of Item displayed
+    int itemPosition;
 
     //float action menu items
     FloatingActionMenu fabAddItemMenu;
@@ -85,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onPageSelected(int position) {
+                updateCurrentPosition(position);
                 menuButtonsHandler.setPositionOfItemWorkingWith(position);
             }
 
@@ -104,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.main_manu, menu);
         this.menuButtonsHandler = new MenuButtonsHandler(menu);
         //set position of first element to menu buttons handler, in case if there are elements
-        if(dataKeeper.getItemAmount() != 0){
+        if (dataKeeper.getItemAmount() != 0) {
             menuButtonsHandler.setPositionOfItemWorkingWith(0);
         }
 
@@ -115,9 +121,9 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        switch (id){
+        switch (id) {
             case R.id.menu_set_location:
-                this.menuButtonsHandler.setLocationPressed();
+                this.menuButtonsHandler.setLocationPressed(this);
                 Toast.makeText(getBaseContext(), "Set location button pressed", Toast.LENGTH_SHORT).show();
                 break;
 
@@ -168,12 +174,28 @@ public class MainActivity extends AppCompatActivity {
     };
 
     /**
-     * processing data from camera
+     *
+     *
+     * @param position
+     */
+    public void updateCurrentPosition(int position){
+        this.itemPosition = position;
+    }
+
+    /**
+     * processing data received from other activities
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == Activity.RESULT_OK) {
+        //request for location setting
+        if (requestCode == REQUEST_CODE_LOCATION && resultCode == RESULT_OK) {
+            String str = data.getStringExtra(MapActivity.KEY_LOCATION);
+            GalleryItemsDataKeeper.getInstance().setLocationToItemByPosition(itemPosition, str);
+//            Toast.makeText(getBaseContext(), str, Toast.LENGTH_SHORT).show();
+        }
+
+        //request for photo adding
+        if (requestCode == REQUEST_TAKE_PHOTO && resultCode == Activity.RESULT_OK) {
             AddPhotoHandler.handleResult(requestCode, resultCode, data);
         }
     }

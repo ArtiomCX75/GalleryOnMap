@@ -135,7 +135,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
      * @param itemId   id of item to add location
      * @param location location to add to Item
      */
-    public void addLocationToItem(int itemId, String location) {
+    public void addLocationToItem(long itemId, String location) {
         ContentValues values = new ContentValues();
         values.put(ITEM_LOCATION_COLUMN, location);
 

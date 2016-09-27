@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.view.Menu;
+import android.widget.Toast;
 
 import java.io.File;
 
@@ -31,12 +32,23 @@ public class MenuButtonsHandler {
     /**
      * Opens new Activity with map
      * to set location of Item on position positionOfItem
+     *
+     * @param activity parent activity which is sending request and will handle result
      */
-    public void setLocationPressed(){
+    public void setLocationPressed(Activity activity){
         if(positionOfItem == null){
             return;
         }
-        //todo
+        Intent intent = new Intent(activity, MapActivity.class);
+        String location =
+                GalleryItemsDataKeeper.getInstance().getItemByPosition(positionOfItem).getLocation();
+
+        //if there is location with this photo - pass it to map activity
+        if(location != null){
+                    intent.putExtra(MapActivity.KEY_LOCATION, location);
+
+        }
+        activity.startActivityForResult(intent, MainActivity.REQUEST_CODE_LOCATION);
     }
 
     /**

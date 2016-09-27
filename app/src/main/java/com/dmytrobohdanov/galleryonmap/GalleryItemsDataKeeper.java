@@ -93,4 +93,14 @@ public class GalleryItemsDataKeeper {
         notifyChanges();
     }
 
+
+    /**
+     * Sets locaton to Item on the specified position
+     *
+     * @param position in array of Items
+     * @param location string location to set
+     */
+    public void setLocationToItemByPosition(int position, String location){
+        dataBase.addLocationToItem(getItemByPosition(position).getItemId(), location);
+    }
 }

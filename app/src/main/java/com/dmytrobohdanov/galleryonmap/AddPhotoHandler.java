@@ -6,9 +6,6 @@ import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
 
-import com.dmytrobohdanov.galleryonmap.Items.Item;
-import com.dmytrobohdanov.galleryonmap.Items.ItemsCreator;
-
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -16,8 +13,7 @@ import java.util.Date;
 
 
 public class AddPhotoHandler extends Activity {
-    static final int REQUEST_TAKE_PHOTO = 1;
-    static final int REQUEST_IMAGE_CAPTURE = 1;
+//    static final int REQUEST_TAKE_PHOTO = 1;
 
     //todo: refactor this to avoid photoFile variable
     private static File photoFile;
@@ -68,7 +64,7 @@ public class AddPhotoHandler extends Activity {
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
                         Uri.fromFile(photoFile));
 //                activity.startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
-                activity.startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+                activity.startActivityForResult(takePictureIntent, MainActivity.REQUEST_TAKE_PHOTO);
             }
 
         }

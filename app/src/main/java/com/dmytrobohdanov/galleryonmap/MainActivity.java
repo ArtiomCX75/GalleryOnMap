@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
     MenuButtonsHandler menuButtonsHandler;
 
     //current position of Item displayed
-    int itemPosition;
+    Integer itemPosition;
 
     //float action menu items
     FloatingActionMenu fabAddItemMenu;
@@ -85,6 +85,11 @@ public class MainActivity extends AppCompatActivity {
 
         //setting GalleryAdapter to database instance
         dataKeeper.setGalleryAdapter(adapter);
+
+        //init position of items
+        if(itemPosition == null && GalleryItemsDataKeeper.getInstance().getItemAmount() > 0){
+            itemPosition = 0;
+        }
 
         viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 

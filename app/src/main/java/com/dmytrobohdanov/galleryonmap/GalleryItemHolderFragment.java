@@ -7,9 +7,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+/**
+ * Holds view of Item
+ */
 public class GalleryItemHolderFragment extends Fragment {
     static final String KEY_ITEM_NUMBER = "itemsNumber";
 
+    //number of page
     int pageNumber;
 
     public GalleryItemHolderFragment() {

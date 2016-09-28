@@ -3,7 +3,7 @@
 
     <!--menu items-->
     <string name="menu_map">"Map"</string>
-    <string name="menu_info">"Info"</string>
+    <string name="menu_details">"Details"</string>
     <string name="menu_delete">"Delete"</string>
     <string name="menu_share">"Share"</string>
     <string name="menu_full_map">"Full map"</string>

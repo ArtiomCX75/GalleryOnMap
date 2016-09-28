@@ -57,7 +57,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     // location
     public static final String ITEM_LOCATION_COLUMN = "location";
 
-    //scripts
+    //scripts to create tables
     //gallery table
     public static final String DATABASE_CREATE_SCRIPT_GALLERY = "create table "
             + DATABASE_TABLE_GALLERY
@@ -69,12 +69,13 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             + ITEM_LOCATION_COLUMN   + " text"
             + ");";
 
+    //users table
     public static final String DATABASE_CREATE_SCRIPT_USERS = "create table "
             + DATABASE_TABLE_USERS
             + " ("
-            + USER_COLUMN_ID       + " integer primary key autoincrement,"
-            + USER_COLUMN_USERNAME + " text,"
-            + USER_COLUMN_PASSWORD + " text"
+            + USER_COLUMN_ID        + " integer primary key autoincrement,"
+            + USER_COLUMN_USERNAME  + " text,"
+            + USER_COLUMN_PASSWORD  + " text"
             + ");";
 
     //instance for singleton
@@ -92,7 +93,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public static DataBaseHelper getInstance(Context context) {
         if (instance == null) {
             instance = new DataBaseHelper(context);
-            //adding first user
+
+            //adding preset user
             instance.addNewUser("user", "123");
         }
         return instance;
@@ -144,7 +146,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
      * @return -1 in case of error adding,
      *          user's id in case of succeed
      */
-    public long addNewUser(String username, String password){
+    public long addNewUser(String username, String password) {
         ContentValues values = new ContentValues();
         values.put(USER_COLUMN_USERNAME, username.toLowerCase());
 
@@ -162,7 +164,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
      * @param username to get password
      * @return encrypted password
      */
-    public String getUsersPass(String username){
+    public String getUsersPass(String username) {
         username = username.toLowerCase();
 
         String query = "select * from "
@@ -181,8 +183,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         cursor.close();
 
         return password;
-
     }
+
     /**
      * Getting array of all Item's IDs in database
      *
@@ -195,7 +197,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         Cursor cursor = getWritableDatabase().query(DATABASE_TABLE_USERS,
                 new String[]{USER_COLUMN_USERNAME}, null, null, null, null, null);
 
-        while(cursor.moveToNext()){
+        while (cursor.moveToNext()) {
             names.add(cursor.getString(cursor.getColumnIndex(USER_COLUMN_USERNAME)));
         }
 
@@ -221,8 +223,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
      * @param filePath path to file
      * @param itemType could be FLAG_VIDEO or FLAG_PHOTO
      * @return id of item added to  database or
-     * -1 in case of adding to DB error or
-     * -2 in case of wrong flag passed
+     *          -1 in case of adding to DB error or
+     *          -2 in case of wrong flag passed
      */
     public long addNewItem(String filePath, int itemType) {
         //checking is flag value is valid
@@ -331,7 +333,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         Cursor cursor = getWritableDatabase().query(DATABASE_TABLE_GALLERY,
                 new String[]{ITEM_ID_COLUMN}, null, null, null, null, null);
 
-        while(cursor.moveToNext()){
+        while (cursor.moveToNext()) {
             itemsIds.add(cursor.getInt(cursor.getColumnIndex(ITEM_ID_COLUMN)));
         }
 
@@ -346,13 +348,13 @@ public class DataBaseHelper extends SQLiteOpenHelper {
      *
      * @return ArrayList of Items from DB
      */
-    public ArrayList<Item> getAllItemsFromDB(){
+    public ArrayList<Item> getAllItemsFromDB() {
         ArrayList<Item> items = new ArrayList<>();
 
         Cursor cursor = getWritableDatabase().query(DATABASE_TABLE_GALLERY,
                 new String[]{ITEM_ID_COLUMN,
                         ITEM_FILE_PATH_COLUMN,
-                        ITEM_IS_VIDEO_COLUMN ,
+                        ITEM_IS_VIDEO_COLUMN,
                         ITEM_PROPERTIES_COLUMN,
                         ITEM_LOCATION_COLUMN},
                 null, null, null, null, null);

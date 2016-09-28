@@ -30,30 +30,30 @@ public class MainActivity extends AppCompatActivity {
     private static final int ID_FAB_ADD_FROM_URL = R.id.fab_add_by_url;
 
     //view pager and adapter
-    ViewPager viewPager;
-    PagerAdapter pagerAdapter;
+    private ViewPager viewPager;
+    private PagerAdapter pagerAdapter;
 
     //data keeper
-    GalleryItemsDataKeeper dataKeeper;
+    private GalleryItemsDataKeeper dataKeeper;
 
     //data base
-    DataBaseHelper dataBase;
+    private DataBaseHelper dataBase;
 
     //creator of Items
-    ItemsCreator itemsCreator;
+    private ItemsCreator itemsCreator;
 
     //menu
-    MenuButtonsHandler menuButtonsHandler;
+    private MenuButtonsHandler menuButtonsHandler;
 
     //current position of Item displayed
-    static Integer itemPosition;
+    private static Integer itemPosition;
 
     //float action menu items
-    FloatingActionMenu fabAddItemMenu;
-    FloatingActionButton fabAddPhoto;
-    FloatingActionButton fabAddVideo;
-    FloatingActionButton fabDownload;
-    FloatingActionButton fabAddFromUrl;
+    private FloatingActionMenu fabAddItemMenu;
+    private FloatingActionButton fabAddPhoto;
+    private FloatingActionButton fabAddVideo;
+    private FloatingActionButton fabDownload;
+    private FloatingActionButton fabAddFromUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
         dataKeeper.setGalleryAdapter(adapter);
 
         //init position of items
-        if(itemPosition == null && GalleryItemsDataKeeper.getInstance().getItemAmount() > 0){
+        if (itemPosition == null && GalleryItemsDataKeeper.getInstance().getItemAmount() > 0) {
             itemPosition = 0;
         }
 
@@ -146,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
                 this.menuButtonsHandler.shareButtonPressed();
                 break;
 
-            case R.id.menu_info:
+            case R.id.menu_details:
                 this.menuButtonsHandler.infoButtonPressed(this);
                 break;
 
@@ -181,7 +181,7 @@ public class MainActivity extends AppCompatActivity {
                 //add by downloading button pressed
                 case ID_FAB_ADD_DOWNLOAD:
                     AddPhotoHandler.downloadPhoto(MainActivity.this);
-//                    Toast.makeText(getBaseContext(), fabDownload.getLabelText() + " pressed", Toast.LENGTH_SHORT).show();
+                    fabAddItemMenu.close(false);
                     break;
 
                 //add from url button pressed
@@ -193,11 +193,9 @@ public class MainActivity extends AppCompatActivity {
     };
 
     /**
-     *
-     *
      * @param position
      */
-    public void updateCurrentPosition(int position){
+    public void updateCurrentPosition(int position) {
         this.itemPosition = position;
     }
 
@@ -218,13 +216,14 @@ public class MainActivity extends AppCompatActivity {
             AddPhotoHandler.handleResult(requestCode, resultCode, data);
         }
 
+        //request for photo from file
         if (requestCode == REQUEST_DOWNLOAD_FILE && resultCode == Activity.RESULT_OK) {
             AddPhotoHandler.handleDownloadFile(data.getData(), getContentResolver(), this);
         }
     }
 
 
-    public static int getDesplaingItemPosition(){
+    public static int getDesplaingItemPosition() {
         return itemPosition;
     }
 }

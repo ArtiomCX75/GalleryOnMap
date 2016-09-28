@@ -17,9 +17,9 @@
         android:title="@string/menu_share"
         app:showAsAction="ifRoom" />
     <item
-        android:id="@+id/menu_info"
+        android:id="@+id/menu_details"
         android:icon="@drawable/ic_menu_info"
-        android:title="@string/menu_info"
+        android:title="@string/menu_details"
         app:showAsAction="ifRoom" />
 
     <item

@@ -18,7 +18,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 
-public class AddPhotoHandler extends Activity {
+public class AddPhotoHandler {
 //    static final int REQUEST_TAKE_PHOTO = 1;
 
     //todo: refactor this to avoid photoFile variable
@@ -80,8 +80,8 @@ public class AddPhotoHandler extends Activity {
      * onActivityResult() from MainActivity uses this method
      * when camera made image
      *
-     * @param requestCode
-     * @param resultCode
+     * @param requestCode requested action
+     * @param resultCode  code of result
      * @param data        - intent keeping photo file
      */
     public static void handleResult(int requestCode, int resultCode, Intent data) {
@@ -90,6 +90,13 @@ public class AddPhotoHandler extends Activity {
         GalleryItemsDataKeeper.getInstance().addNewItem(photoFile.getPath(), false);
     }
 
+    /**
+     * Handle file downloaded
+     *
+     * @param data            uri of file
+     * @param contentResolver
+     * @param activity
+     */
     public static void handleDownloadFile(Uri data, ContentResolver contentResolver, Activity activity) {
         //getting bitmap
         Bitmap bitmap = null;
@@ -126,6 +133,9 @@ public class AddPhotoHandler extends Activity {
         GalleryItemsDataKeeper.getInstance().addNewItem(file.getPath(), false);
     }
 
+    /**
+     * Choose file from disk
+     */
     public static void downloadPhoto(Activity activity) {
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType("image/*");

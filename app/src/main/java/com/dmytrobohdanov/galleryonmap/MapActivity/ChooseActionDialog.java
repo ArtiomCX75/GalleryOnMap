@@ -24,10 +24,21 @@ public class ChooseActionDialog extends DialogFragment {
     private Item item;
     private Marker marker;
 
-    public void setItem(Item item){
+    /**
+     * Setting Item working with
+     * have to be called
+     *
+     * @param item working with
+     */
+    public void setItem(Item item) {
         this.item = item;
     }
 
+    /**
+     * Marker working with
+     *
+     * @param marker working with
+     */
     public void setMarker(Marker marker) {
         this.marker = marker;
     }
@@ -38,14 +49,19 @@ public class ChooseActionDialog extends DialogFragment {
 
         builder.setItems(R.array.marker_actions, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                if(which == 0) {
+                //0 - is for showing image
+                if (which == 0) {
                     //show image
                     Intent intent = new Intent(Intent.ACTION_VIEW);
                     intent.setDataAndType(Uri.fromFile(
                             new File(item.getFilePath())), "image/*");
                     startActivity(intent);
-                }  else if(which == 1){
+                } else if (which == 1) {
+                    //1 - is for deleting
+                    //hide marker
                     marker.setVisible(false);
+
+                    //delete location from this item
                     GalleryItemsDataKeeper.getInstance().updateLocation(item.getItemId(), null);
                 }
 

@@ -3,7 +3,6 @@ package com.dmytrobohdanov.galleryonmap.MapActivity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
@@ -22,7 +21,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -79,6 +77,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         }
     }
 
+    /**
+     * Initializing map with all items from DB
+     */
     private void initializeAllItemsLocations() {
         markerToItem = new HashMap<>();
 
@@ -93,9 +94,18 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 }
             }
         }
+
+        //set listener
         map.setOnMarkerClickListener(getOnMarkerClickListener());
     }
 
+    /**
+     * Listener
+     * listening clicks on Markers
+     * shows menu on click action
+     *
+     * @return instance of OnMarkerClickListener
+     */
     private GoogleMap.OnMarkerClickListener getOnMarkerClickListener() {
         GoogleMap.OnMarkerClickListener listener = new GoogleMap.OnMarkerClickListener() {
             @Override
@@ -117,15 +127,18 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     /**
      * Initializing map with location of one item
-     * possible to drag
+     * possible to drag marker
      */
     private void initializeOneLocation() {
 
         //if there wasn't location on photo - put marker on my current location
         if (photoLocation == null) {
+            //checking geolocation permissions
             if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 return;
             }
+
+            //enable to get location
             map.setMyLocationEnabled(true);
             Location location = map.getMyLocation();
             if (location == null) {
@@ -152,6 +165,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
             @Override
             public void onMarkerDragEnd(Marker marker) {
+                //updating location of marker
                 updateLocation(marker);
             }
         };
@@ -160,6 +174,11 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     }
 
+    /**
+     * Updating Marker's info
+     *
+     * @param marker new marker
+     */
     public void updateLocation(Marker marker) {
         this.marker = marker;
     }
@@ -188,6 +207,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        //is map contains all items - no menu needed
+        //else - add menu
         if (isFullMap) {
             return false;
         }

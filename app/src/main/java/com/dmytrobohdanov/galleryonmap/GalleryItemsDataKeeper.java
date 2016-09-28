@@ -1,8 +1,6 @@
 package com.dmytrobohdanov.galleryonmap;
 
 
-import android.util.Log;
-
 import com.dmytrobohdanov.galleryonmap.Items.Item;
 import com.dmytrobohdanov.galleryonmap.Items.ItemsCreator;
 
@@ -67,6 +65,10 @@ public class GalleryItemsDataKeeper {
     }
 
 
+    /**
+     * Notifying data changed
+     * updating items amount
+     */
     public void notifyChanges() {
         itemsIds = dataBase.getArrayOfItemsIds();
         galleryAdapter.updateItemsAmount();
@@ -117,7 +119,7 @@ public class GalleryItemsDataKeeper {
     /**
      * setting new location to item with specified id
      *
-     * @param itemId id of item to update location
+     * @param itemId   id of item to update location
      * @param location new location
      */
     public void updateLocation(long itemId, String location) {

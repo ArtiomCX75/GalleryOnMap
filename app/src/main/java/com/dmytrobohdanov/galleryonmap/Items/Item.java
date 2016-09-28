@@ -1,7 +1,5 @@
 package com.dmytrobohdanov.galleryonmap.Items;
 
-import com.dmytrobohdanov.galleryonmap.DataBaseHelper;
-
 /**
  * Class that keeps data of item to display in gallery
  * it could be info about photo or video file
@@ -25,13 +23,14 @@ public class Item {
     /*
      * Constructors
      */
+
     /**
      * Creating new item
      * for ItemsCreator
      *
-     * @param itemId
-     * @param filePath
-     * @param isVideo
+     * @param itemId id of item
+     * @param filePath path to photo file
+     * @param isVideo flag is this video file
      */
     protected Item(long itemId, String filePath, boolean isVideo) {
         this.itemId = itemId;

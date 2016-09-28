@@ -10,6 +10,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import com.dmytrobohdanov.galleryonmap.Items.Item;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 
 /**
  * Database helper
@@ -27,10 +28,21 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     // version of DB
     private static final int DATABASE_VERSION = 1;
 
-    // name of table
+    // name of tables
     public static final String DATABASE_TABLE_GALLERY = "gallery";
+    public static final String DATABASE_TABLE_USERS = "users";
 
-    //  columns
+    //columns for users
+    //id
+    public static final String USER_COLUMN_ID = "userId";
+
+    //username
+    public static final String USER_COLUMN_USERNAME = "userName";
+
+    //password
+    public static final String USER_COLUMN_PASSWORD = "userPassword";
+
+    //  columns for gallery
     // id
     public static final String ITEM_ID_COLUMN = "itemId";
     //file path
@@ -46,7 +58,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public static final String ITEM_LOCATION_COLUMN = "location";
 
     //scripts
-    public static final String DATABASE_CREATE_SCRIPT = "create table "
+    //gallery table
+    public static final String DATABASE_CREATE_SCRIPT_GALLERY = "create table "
             + DATABASE_TABLE_GALLERY
             + " ("
             + ITEM_ID_COLUMN         + " integer primary key autoincrement,"
@@ -54,6 +67,14 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             + ITEM_IS_VIDEO_COLUMN   + " text,"
             + ITEM_PROPERTIES_COLUMN + " text,"
             + ITEM_LOCATION_COLUMN   + " text"
+            + ");";
+
+    public static final String DATABASE_CREATE_SCRIPT_USERS = "create table "
+            + DATABASE_TABLE_USERS
+            + " ("
+            + USER_COLUMN_ID       + " integer primary key autoincrement,"
+            + USER_COLUMN_USERNAME + " text,"
+            + USER_COLUMN_PASSWORD + " text"
             + ");";
 
     //instance for singleton
@@ -71,6 +92,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public static DataBaseHelper getInstance(Context context) {
         if (instance == null) {
             instance = new DataBaseHelper(context);
+            //adding first user
+            instance.addNewUser("user", "123");
         }
         return instance;
     }
@@ -92,7 +115,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
      */
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        sqLiteDatabase.execSQL(DATABASE_CREATE_SCRIPT);
+        sqLiteDatabase.execSQL(DATABASE_CREATE_SCRIPT_GALLERY);
+        sqLiteDatabase.execSQL(DATABASE_CREATE_SCRIPT_USERS);
     }
 
     /**
@@ -111,6 +135,85 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         onCreate(sqLiteDatabase);
     }
 
+    /**
+     * Adding new user to db
+     * warning: all user names are case insensitive
+     *
+     * @param username name of user
+     * @param password raw data password, without encrypting
+     * @return -1 in case of error adding,
+     *          user's id in case of succeed
+     */
+    public long addNewUser(String username, String password){
+        ContentValues values = new ContentValues();
+        values.put(USER_COLUMN_USERNAME, username.toLowerCase());
+
+        //encrypting password
+        password = Encryptor.getMd5(password);
+        values.put(USER_COLUMN_PASSWORD, password);
+
+        return getWritableDatabase().insert(DATABASE_TABLE_USERS, null, values);
+    }
+
+    /**
+     * Getting password of user
+     * warning: all user names are case insensitive
+     *
+     * @param username to get password
+     * @return encrypted password
+     */
+    public String getUsersPass(String username){
+        username = username.toLowerCase();
+
+        String query = "select * from "
+                + DATABASE_TABLE_USERS
+                + " where "
+                + USER_COLUMN_USERNAME
+                + " = "
+                + "'"
+                + username
+                + "'";
+
+        Cursor cursor = getWritableDatabase().rawQuery(query, null);
+        cursor.moveToFirst();
+
+        String password = cursor.getString(cursor.getColumnIndex(USER_COLUMN_PASSWORD));
+        cursor.close();
+
+        return password;
+
+    }
+    /**
+     * Getting array of all Item's IDs in database
+     *
+     * @return array of ID of Items in database
+     */
+    public LinkedHashSet<String> getArrayOfUsernames() {
+        LinkedHashSet<String> names = new LinkedHashSet<>();
+
+        //getting all IDs in gallery-table
+        Cursor cursor = getWritableDatabase().query(DATABASE_TABLE_USERS,
+                new String[]{USER_COLUMN_USERNAME}, null, null, null, null, null);
+
+        while(cursor.moveToNext()){
+            names.add(cursor.getString(cursor.getColumnIndex(USER_COLUMN_USERNAME)));
+        }
+
+        cursor.close();
+
+        return names;
+    }
+
+    /**
+     * Deleting User with specified name
+     *
+     * @param userId have to be deleted
+     */
+    public void deleteUser(long userId) {
+        getWritableDatabase().delete(DATABASE_TABLE_USERS,
+                USER_COLUMN_ID + "= ?",
+                new String[]{String.valueOf(userId)});
+    }
 
     /**
      * Adding new item to database
@@ -125,7 +228,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         //checking is flag value is valid
         if (itemType != FLAG_PHOTO && itemType != FLAG_VIDEO) {
             //wrong flag value - return -2
-            return -2;
+            return -2; //todo: remove number, make const
         }
         ContentValues values = new ContentValues();
         values.put(ITEM_FILE_PATH_COLUMN, filePath);

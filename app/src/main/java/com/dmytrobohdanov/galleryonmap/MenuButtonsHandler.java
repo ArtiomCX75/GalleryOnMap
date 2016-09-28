@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.view.Menu;
 
+import com.dmytrobohdanov.galleryonmap.MapActivity.MapActivity;
+
 import java.io.File;
 
 public class MenuButtonsHandler {

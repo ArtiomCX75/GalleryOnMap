@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.dmytrobohdanov.galleryonmap.MapActivity.MapActivity;
 import com.dmytrobohdanov.galleryonmap.Items.ItemsCreator;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;

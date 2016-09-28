@@ -67,7 +67,7 @@ public class GalleryItemsDataKeeper {
     }
 
 
-    public void notifyChanges(){
+    public void notifyChanges() {
         itemsIds = dataBase.getArrayOfItemsIds();
         galleryAdapter.updateItemsAmount();
     }
@@ -76,7 +76,7 @@ public class GalleryItemsDataKeeper {
      * Adding new Item
      *
      * @param filePath path to file
-     * @param isVideo is it video flag
+     * @param isVideo  is it video flag
      */
     public void addNewItem(String filePath, boolean isVideo) {
         Item item = ItemsCreator.createNewItem(filePath, isVideo);
@@ -88,7 +88,7 @@ public class GalleryItemsDataKeeper {
      *
      * @param position of item
      */
-    public void deleteItemOnPosition (int position){
+    public void deleteItemOnPosition(int position) {
         dataBase.deleteItem(itemsIds.get(position));
         notifyChanges();
     }
@@ -100,7 +100,7 @@ public class GalleryItemsDataKeeper {
      * @param position in array of Items
      * @param location string location to set
      */
-    public void setLocationToItemByPosition(int position, String location){
+    public void setLocationToItemByPosition(int position, String location) {
         dataBase.addLocationToItem(getItemByPosition(position).getItemId(), location);
     }
 
@@ -110,7 +110,17 @@ public class GalleryItemsDataKeeper {
      *
      * @return ArrayList of Items
      */
-    public ArrayList<Item> getAllItems(){
+    public ArrayList<Item> getAllItems() {
         return dataBase.getAllItemsFromDB();
+    }
+
+    /**
+     * setting new location to item with specified id
+     *
+     * @param itemId id of item to update location
+     * @param location new location
+     */
+    public void updateLocation(long itemId, String location) {
+        dataBase.addLocationToItem(itemId, location);
     }
 }

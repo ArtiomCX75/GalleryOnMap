@@ -1,4 +1,4 @@
-package com.dmytrobohdanov.galleryonmap;
+package com.dmytrobohdanov.galleryonmap.MapActivity;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -6,11 +6,14 @@ import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.dmytrobohdanov.galleryonmap.GalleryItemsDataKeeper;
 import com.dmytrobohdanov.galleryonmap.Items.Item;
+import com.dmytrobohdanov.galleryonmap.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -100,11 +103,11 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 //getting item associated with clicked marker
                 Item item = markerToItem.get(marker);
 
-                //show image
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setDataAndType(Uri.fromFile(
-                        new File(item.getFilePath())), "image/*");
-                startActivity(intent);
+                FragmentManager fm = getSupportFragmentManager();
+                ChooseActionDialog dialog = new ChooseActionDialog();
+                dialog.setItem(item);
+                dialog.setMarker(marker);
+                dialog.show(fm, "chooseTag");
                 return false;
             }
         };
@@ -205,3 +208,4 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         return super.onOptionsItemSelected(item);
     }
 }
+

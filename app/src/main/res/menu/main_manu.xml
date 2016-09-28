@@ -7,23 +7,30 @@
 
     <item
         android:id="@+id/menu_set_location"
-        app:showAsAction="always"
         android:icon="@drawable/ic_menu_set_location"
-        android:title="@string/menu_map"/>
+        android:title="@string/menu_map"
+        app:showAsAction="always" />
 
     <item
         android:id="@+id/menu_share"
         android:icon="@drawable/ic_menu_share"
-        app:showAsAction="ifRoom"
-        android:title="@string/menu_share"/>
+        android:title="@string/menu_share"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/menu_info"
         android:icon="@drawable/ic_menu_info"
-        app:showAsAction="ifRoom"
-        android:title="@string/menu_info"/>
+        android:title="@string/menu_info"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/menu_full_map"
+        android:icon="@drawable/ic_menu_full_map"
+        android:title="@string/menu_full_map"
+        app:showAsAction="ifRoom" />
+
     <item
         android:id="@+id/menu_delete"
         android:icon="@android:drawable/ic_menu_delete"
-        app:showAsAction="never"
-        android:title="@string/menu_delete"/>
+        android:title="@string/menu_delete"
+        app:showAsAction="never" />
 </menu>

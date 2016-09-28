@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.view.Menu;
-import android.widget.Toast;
 
 import java.io.File;
 
@@ -17,7 +16,7 @@ public class MenuButtonsHandler {
      *
      * @param menu to handle
      */
-    public MenuButtonsHandler(Menu menu){
+    public MenuButtonsHandler(Menu menu) {
         this.menu = menu;
     }
 
@@ -25,7 +24,7 @@ public class MenuButtonsHandler {
      * Setting position of item working with
      * should use after displayed another element in View
      */
-    public void setPositionOfItemWorkingWith(int positionOfItem){
+    public void setPositionOfItemWorkingWith(int positionOfItem) {
         this.positionOfItem = positionOfItem;
     }
 
@@ -35,8 +34,8 @@ public class MenuButtonsHandler {
      *
      * @param activity parent activity which is sending request and will handle result
      */
-    public void setLocationPressed(Activity activity){
-        if(positionOfItem == null){
+    public void setLocationPressed(Activity activity) {
+        if (positionOfItem == null) {
             return;
         }
         Intent intent = new Intent(activity, MapActivity.class);
@@ -44,18 +43,29 @@ public class MenuButtonsHandler {
                 GalleryItemsDataKeeper.getInstance().getItemByPosition(positionOfItem).getLocation();
 
         //if there is location with this photo - pass it to map activity
-        if(location != null){
-                    intent.putExtra(MapActivity.KEY_LOCATION, location);
+        if (location != null) {
+            intent.putExtra(MapActivity.KEY_LOCATION, location);
 
         }
         activity.startActivityForResult(intent, MainActivity.REQUEST_CODE_LOCATION);
     }
 
     /**
+     * Opens MapActivity to show all items placed on map
+     */
+    public void fullMapButtonPressed(Activity activity) {
+        Intent intent = new Intent(activity, MapActivity.class);
+
+        intent.putExtra(MapActivity.KEY_SHOW_ALL_MARKERS, true);
+
+        activity.startActivity(intent);
+    }
+
+    /**
      * Share Item  on position positionOfItem
      */
-    public void shareButtonPressed(){
-        if(positionOfItem == null){
+    public void shareButtonPressed() {
+        if (positionOfItem == null) {
             return;
         }
 
@@ -64,8 +74,8 @@ public class MenuButtonsHandler {
     /**
      * Opens new activity with info of Item
      */
-    public void infoButtonPressed(Activity activity){
-        if(positionOfItem == null){
+    public void infoButtonPressed(Activity activity) {
+        if (positionOfItem == null) {
             return;
         }
 
@@ -79,12 +89,10 @@ public class MenuButtonsHandler {
     /**
      * Deletes Item
      */
-    public void deleteButtonPressed(){
-        if(positionOfItem == null){
+    public void deleteButtonPressed() {
+        if (positionOfItem == null) {
             return;
         }
         GalleryItemsDataKeeper.getInstance().deleteItemOnPosition(positionOfItem);
     }
-
-
 }

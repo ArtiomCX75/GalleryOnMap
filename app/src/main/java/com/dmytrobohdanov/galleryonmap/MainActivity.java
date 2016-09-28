@@ -27,16 +27,24 @@ public class MainActivity extends AppCompatActivity {
     private static final int ID_FAB_ADD_DOWNLOAD = R.id.fab_add_download;
     private static final int ID_FAB_ADD_FROM_URL = R.id.fab_add_by_url;
 
+    //view pager and adapter
     ViewPager viewPager;
     PagerAdapter pagerAdapter;
 
+    //data keeper
     GalleryItemsDataKeeper dataKeeper;
+
+    //data base
     DataBaseHelper dataBase;
+
+    //creator of Items
     ItemsCreator itemsCreator;
+
+    //menu
     MenuButtonsHandler menuButtonsHandler;
 
     //current position of Item displayed
-    Integer itemPosition;
+    static Integer itemPosition;
 
     //float action menu items
     FloatingActionMenu fabAddItemMenu;
@@ -129,7 +137,6 @@ public class MainActivity extends AppCompatActivity {
         switch (id) {
             case R.id.menu_set_location:
                 this.menuButtonsHandler.setLocationPressed(this);
-                Toast.makeText(getBaseContext(), "Set location button pressed", Toast.LENGTH_SHORT).show();
                 break;
 
             case R.id.menu_share:
@@ -139,6 +146,10 @@ public class MainActivity extends AppCompatActivity {
 
             case R.id.menu_info:
                 this.menuButtonsHandler.infoButtonPressed(this);
+                break;
+
+            case R.id.menu_full_map:
+                this.menuButtonsHandler.fullMapButtonPressed(this);
                 break;
 
             case R.id.menu_delete:
@@ -203,5 +214,10 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == REQUEST_TAKE_PHOTO && resultCode == Activity.RESULT_OK) {
             AddPhotoHandler.handleResult(requestCode, resultCode, data);
         }
+    }
+
+
+    public static int getDesplaingItemPosition(){
+        return itemPosition;
     }
 }

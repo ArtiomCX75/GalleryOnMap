@@ -3,14 +3,14 @@ package com.dmytrobohdanov.galleryonmap;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentActivity;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
+import com.dmytrobohdanov.galleryonmap.Items.Item;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -19,13 +19,29 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class MapActivity extends AppCompatActivity implements OnMapReadyCallback {
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
 
-    public static String KEY_LOCATION = "location";
+public class MapActivity extends AppCompatActivity implements OnMapReadyCallback {
+    public static final String KEY_LOCATION = "location";
+    public static final String KEY_SHOW_ALL_MARKERS = "showAll";
+
+    //map
+    private GoogleMap map;
+
+    //location and marker in case of one marker on map
     private LatLng photoLocation;
     private Marker marker;
-    private GoogleMap map;
-    GoogleMap.OnMarkerDragListener listener;
+
+    private GoogleMap.OnMarkerDragListener listener;
+
+    //all items on map flag
+    private boolean isFullMap;
+
+    //hashmap with pairs marker-item for all images on map
+    private HashMap<Marker, Item> markerToItem;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,11 +52,15 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-
-        String location = getIntent().getStringExtra(KEY_LOCATION);
-        if (location != null) {
-            //setting location to map
-            photoLocation = getLatLngFromString(location);
+        if (getIntent().hasExtra(KEY_SHOW_ALL_MARKERS)) {
+            isFullMap = true;
+        } else {
+            isFullMap = false;
+            String location = getIntent().getStringExtra(KEY_LOCATION);
+            if (location != null) {
+                //setting location to map
+                photoLocation = getLatLngFromString(location);
+            }
         }
     }
 
@@ -48,6 +68,55 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
+
+        if (isFullMap) {
+            initializeAllItemsLocations();
+        } else {
+            initializeOneLocation();
+        }
+    }
+
+    private void initializeAllItemsLocations() {
+        markerToItem = new HashMap<>();
+
+        //set all markers to map
+        ArrayList<Item> items = GalleryItemsDataKeeper.getInstance().getAllItems();
+        if (items != null) {
+            for (Item item : items) {
+                String location = item.getLocation();
+                if (location != null) {
+                    Marker marker = map.addMarker(new MarkerOptions().position(getLatLngFromString(location)).draggable(false));
+                    markerToItem.put(marker, item);
+                }
+            }
+        }
+        map.setOnMarkerClickListener(getOnMarkerClickListener());
+    }
+
+    private GoogleMap.OnMarkerClickListener getOnMarkerClickListener() {
+        GoogleMap.OnMarkerClickListener listener = new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                //getting item associated with clicked marker
+                Item item = markerToItem.get(marker);
+
+                //show image
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setDataAndType(Uri.fromFile(
+                        new File(item.getFilePath())), "image/*");
+                startActivity(intent);
+                return false;
+            }
+        };
+
+        return listener;
+    }
+
+    /**
+     * Initializing map with location of one item
+     * possible to drag
+     */
+    private void initializeOneLocation() {
 
         //if there wasn't location on photo - put marker on my current location
         if (photoLocation == null) {
@@ -64,7 +133,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         }
 
         // Add a marker in Sydney and move the camera
-        marker = map.addMarker(new MarkerOptions().position(photoLocation).draggable(true).title("Marker NOT in Sydney"));
+        marker = map.addMarker(new MarkerOptions().position(photoLocation).draggable(true));
         map.moveCamera(CameraUpdateFactory.newLatLng(photoLocation));
 
         listener = new GoogleMap.OnMarkerDragListener() {
@@ -85,9 +154,10 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         };
 
         map.setOnMarkerDragListener(listener);
+
     }
 
-    public void updateLocation(Marker marker){
+    public void updateLocation(Marker marker) {
         this.marker = marker;
     }
 
@@ -104,7 +174,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         return new LatLng(latitude, longitude);
     }
 
-    //temp
+    //temp, todo: rewrite to handle errors and make scalable
     private void setResultOk() {
         Intent intent = new Intent();
         intent.putExtra(MapActivity.KEY_LOCATION,
@@ -115,6 +185,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        if (isFullMap) {
+            return false;
+        }
         getMenuInflater().inflate(R.menu.map_menu, menu);
         return true;
     }

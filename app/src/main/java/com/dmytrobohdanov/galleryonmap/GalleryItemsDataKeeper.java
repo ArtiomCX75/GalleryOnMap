@@ -103,4 +103,14 @@ public class GalleryItemsDataKeeper {
     public void setLocationToItemByPosition(int position, String location){
         dataBase.addLocationToItem(getItemByPosition(position).getItemId(), location);
     }
+
+
+    /**
+     * Getting array of Items
+     *
+     * @return ArrayList of Items
+     */
+    public ArrayList<Item> getAllItems(){
+        return dataBase.getAllItemsFromDB();
+    }
 }

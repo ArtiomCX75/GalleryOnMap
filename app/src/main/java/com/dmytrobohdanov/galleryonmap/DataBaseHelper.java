@@ -11,6 +11,11 @@ import com.dmytrobohdanov.galleryonmap.Items.Item;
 
 import java.util.ArrayList;
 
+/**
+ * Database helper
+ * creates DB, have all methods to work with it
+ */
+//todo: make methods protected, work with GalleryItemsDataKeeper
 public class DataBaseHelper extends SQLiteOpenHelper {
     //flags to define photo or video item during adding new one
     public static final int FLAG_VIDEO = 1;
@@ -230,5 +235,35 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         cursor.close();
 
         return itemsIds;
+    }
+
+
+    /**
+     * Getting array of Items saved in DB
+     *
+     * @return ArrayList of Items from DB
+     */
+    public ArrayList<Item> getAllItemsFromDB(){
+        ArrayList<Item> items = new ArrayList<>();
+
+        Cursor cursor = getWritableDatabase().query(DATABASE_TABLE_GALLERY,
+                new String[]{ITEM_ID_COLUMN,
+                        ITEM_FILE_PATH_COLUMN,
+                        ITEM_IS_VIDEO_COLUMN ,
+                        ITEM_PROPERTIES_COLUMN,
+                        ITEM_LOCATION_COLUMN},
+                null, null, null, null, null);
+
+        while (cursor.moveToNext()) {
+            int itemId = cursor.getInt(cursor.getColumnIndex(ITEM_ID_COLUMN));
+            String filePath = cursor.getString(cursor.getColumnIndex(ITEM_FILE_PATH_COLUMN));
+            String isVideo = cursor.getString(cursor.getColumnIndex(ITEM_IS_VIDEO_COLUMN));
+            String properties = cursor.getString(cursor.getColumnIndex(ITEM_PROPERTIES_COLUMN));
+            String location = cursor.getString(cursor.getColumnIndex(ITEM_LOCATION_COLUMN));
+
+            items.add(new Item(itemId, filePath, isVideo, location, properties));
+        }
+
+        return items;
     }
 }

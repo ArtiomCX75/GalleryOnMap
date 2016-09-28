@@ -20,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
     //request flags for startActivityForResult
     public static final int REQUEST_TAKE_PHOTO = 1;
     public static final int REQUEST_CODE_LOCATION = 2;
+    public static final int REQUEST_DOWNLOAD_FILE = 3;
 
     //float action button/menu IDs
     private static final int ID_ADD_ITEM_FAB_MENU = R.id.add_item_fab_menu;
@@ -179,7 +180,8 @@ public class MainActivity extends AppCompatActivity {
 
                 //add by downloading button pressed
                 case ID_FAB_ADD_DOWNLOAD:
-                    Toast.makeText(getBaseContext(), fabDownload.getLabelText() + " pressed", Toast.LENGTH_SHORT).show();
+                    AddPhotoHandler.downloadPhoto(MainActivity.this);
+//                    Toast.makeText(getBaseContext(), fabDownload.getLabelText() + " pressed", Toast.LENGTH_SHORT).show();
                     break;
 
                 //add from url button pressed
@@ -214,6 +216,10 @@ public class MainActivity extends AppCompatActivity {
         //request for photo adding
         if (requestCode == REQUEST_TAKE_PHOTO && resultCode == Activity.RESULT_OK) {
             AddPhotoHandler.handleResult(requestCode, resultCode, data);
+        }
+
+        if (requestCode == REQUEST_DOWNLOAD_FILE && resultCode == Activity.RESULT_OK) {
+            AddPhotoHandler.handleDownloadFile(data.getData(), getContentResolver(), this);
         }
     }
 

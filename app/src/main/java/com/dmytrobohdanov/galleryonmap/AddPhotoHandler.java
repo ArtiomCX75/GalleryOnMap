@@ -1,13 +1,19 @@
 package com.dmytrobohdanov.galleryonmap;
 
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -82,6 +88,48 @@ public class AddPhotoHandler extends Activity {
         //temporary - photoFile is placed as var in this class, not passing
         //so photoFile is defined above
         GalleryItemsDataKeeper.getInstance().addNewItem(photoFile.getPath(), false);
+    }
+
+    public static void handleDownloadFile(Uri data, ContentResolver contentResolver, Activity activity) {
+        //getting bitmap
+        Bitmap bitmap = null;
+        try {
+            bitmap = MediaStore.Images.Media.getBitmap(contentResolver, data);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        //creating file
+        File file = null;
+        try {
+            file = createImageFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        //making file from bitmap
+        OutputStream os = null;
+        try {
+            os = new BufferedOutputStream(new FileOutputStream(file));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        assert bitmap != null;
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, os);
+        try {
+            assert os != null;
+            os.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        GalleryItemsDataKeeper.getInstance().addNewItem(file.getPath(), false);
+    }
+
+    public static void downloadPhoto(Activity activity) {
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType("image/*");
+        activity.startActivityForResult(intent, MainActivity.REQUEST_DOWNLOAD_FILE);
     }
 }
 
